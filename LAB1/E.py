@@ -1,5 +1,7 @@
-a=int(input())
-b=int(input())
+s = input()
+a, b = s.split()
+a = int(a)
+b = int(b)
 k=0
 for i in range(2, a // 2,1):
     if (a % i == 0):
