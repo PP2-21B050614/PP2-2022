@@ -1,10 +1,10 @@
-a=input().split()
-k=0
-for i in range(0,len(a)):
-    if i==k:
-        k=int(a[i])+k
+ls = input().split()
 
-if k>=len(a):
-    print(1)
-else:
+mx = 0
+for i in range(len(ls)):
+  mx = max(i + int(ls[i]), mx)
+  if mx <= i and i != len(ls)-1:
     print(0)
+    break
+else:
+  print(1)
