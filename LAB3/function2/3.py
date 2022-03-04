@@ -82,4 +82,3 @@ def f(d):
             if(movies[i]["category"]==d):
                 print(movies[i]["name"])
 print(f(d))
-
