@@ -57,5 +57,4 @@ def main():
                     radius += 1
                 if event.key==pygame.K_DOWN:
                     radius -= -1
-            if event.type == pygame.MOUSEBUTTONDOWN:
                 
