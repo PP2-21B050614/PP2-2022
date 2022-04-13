@@ -28,8 +28,8 @@ class Snake:
         self.size+=1
         self.elements.append([0,0])
         self.is_add=False
-        if self.size % 4==0:
-            self.speed+=5
+       # if self.size % 4==0:
+         #   self.speed+=5
 
     def move(self):
         if self.is_add:
@@ -45,6 +45,12 @@ class Snake:
         x=self.elements[0][0]
         y=self.elements[0][1]
         if foodx <= x <= foodx + food.d+5 and  foody <= y <= foody + food.d+5:
+            return True
+        return False
+    def eat_el(self, elx, ely):
+        n=self.elements[0][0]
+        m=self.elements[0][1]
+        if elx <= n <= elx + elic.x+5 and  ely <= m <= ely + elic.y+5:
             return True
         return False
 
@@ -72,9 +78,26 @@ class Food:
             self.gen()
         pygame.draw.rect(screen,GREEN,(self.x, self.y, self.d,self.d))
 
+class Elic:
+    def __init__(self):
+        self.x=randint(0,685)
+        self.y=randint(0,585)
+    def gen(self):
+        self.x=randint(0,685)
+        self.y=randint(0,585)
+        if [self.x,self.y] in snake.elements:
+            self.x=randint(0,685)
+            self.y=randint(0,585)
+                   
+    def draw(self):
+        pygame.draw.rect(screen,WHITE,(self.x, self.y, 15, 15))
+
+
 snake=Snake(100,100)
-food=Food(5)
+food=Food(20)
+elic=Elic()
 running=True
+time=datetime.datetime.now()
 
 
 FPS=30
@@ -105,14 +128,21 @@ while running:
             if event.key==pygame.K_UP and snake.dy!=m:
                 snake.dx=0
                 snake.dy=-m
-    if snake.elements[0][1]+20>600:
-        running=False
-    if snake.elements[0][1]<20:
-        running=False
-    if snake.elements[0][0]+20>700:
-        running=False
-    if snake.elements[0][0]<20:
-        running=False
+    if snake.elements[0][1]>600:
+        snake.elements[0][1]=10
+    if snake.elements[0][1]<0:
+        snake.elements[0][1]=590
+    if snake.elements[0][0]>700:
+        snake.elements[0][0]=10
+    if snake.elements[0][0]<0:
+        snake.elements[0][0]=690
+
+    if snake.eat_el(elic.x,elic.y):
+        snake.speed=60
+        time=datetime.datetime.now()
+        elic.gen()
+    if 5<=(datetime.datetime.now()-time).seconds:
+                snake.speed=30
 
     if snake.eat(food.x,food.y):
         snake.is_add=True
@@ -126,6 +156,7 @@ while running:
     lvls = font_small.render(f'Lvl: {lv}', True, WHITE)
     screen.blit(lvls, (600, 35))
     snake.draw()
+    elic.draw()
     food.draw()
     pygame.display.flip()
 pygame.quit()

@@ -123,9 +123,88 @@ def drawRectangle(screen, start, end, width, color):
     if x2 > x1 and y1 > y2:
         pygame.draw.rect(screen, pygame.Color(color), (x1, y2, widthr, height), width)
 
+# a square
+def drawSquare(screen, start, end, width, color):
+    radius = 15
+    x1 = start[0]
+    x2 = end[0]
+    y1 = start[1]
+    y2 = end[1]
+    widths=abs(x2-x1)
+    height=abs(y2-y1)
+    mn=min(abs(x2-x1), abs(y2-y1))
+
+    # right down
+    if x2>x1 and y2>y1:
+        pygame.draw.line(screen, pygame.Color(color), (x1,y1-radius/2.3), (x1, y1+mn), width) # левого верха до левого низа
+        pygame.draw.line(screen, pygame.Color(color), (x1,y1), (x1+mn, y1), width) # левого верха до правого верха
+        pygame.draw.line(screen, pygame.Color(color), (x1+mn,y1-radius/2.3), (x1+mn, y1+mn), width)  # с правого верха до правого низа
+        pygame.draw.line(screen, pygame.Color(color), (x1-radius/2.3,y1+mn), (x1+mn+radius/2, y1+mn), width)   # с левого низа до правого низа
+
+    # right up
+    if y2<y1 and x2>x1:
+        pygame.draw.line(screen, pygame.Color(color), (x1,y1),(x1,y1-mn), width) # левого верха до левого верха
+        pygame.draw.line(screen, pygame.Color(color), (x1-radius/2.3,y1),(x1+mn,y1), width)  # левого верха до правого верха
+        pygame.draw.line(screen, pygame.Color(color), (x1-radius/2.3,y1-mn),(x1+mn,y1-mn), width)  # с правого верха до правого низа
+        pygame.draw.line(screen, pygame.Color(color), (x1+mn,y1+radius/2),(x1+mn,y1-mn-radius/2.3), width)  # с правого низа до левого низа
+
+    # left up
+    if x1>x2 and y1>y2:
+        pygame.draw.line(screen, pygame.Color(color), (x1,y1+radius/2),(x1,y1-mn), width)  #  с правого низа до правого верха
+        pygame.draw.line(screen, pygame.Color(color), (x1,y1),(x1-mn-radius/2.3,y1), width)  # с правого верха до левого верха
+        pygame.draw.line(screen, pygame.Color(color), (x1-mn,y1),(x1-mn,y1-mn-radius/2.3), width)   # с левого верха до левого низа
+        pygame.draw.line(screen, pygame.Color(color), (x1-mn,y1-mn),(x1+radius/2,y1-mn), width)  # с левого низа до правого низа
+
+    # left down
+    if x1>x2 and y1<y2:
+        pygame.draw.line(screen, pygame.Color(color), (x1,y1-radius/2.3), (x1,y1+mn+radius/2), width)  #   с правого верха до правого низа
+        pygame.draw.line(screen, pygame.Color(color), (x1,y1+mn), (x1-mn-radius/2.3,y1+mn), width)  # с правого низа до левого низа
+        pygame.draw.line(screen, pygame.Color(color), (x1-mn,y1+mn), (x1-mn,y1-radius/2.3), width)   # с левого низа до левого верха
+        pygame.draw.line(screen, pygame.Color(color), (x1-mn,y1), (x1,y1), width)  # с левого верха до правого верха
+
+
+# RightTriangle
+def drawRightTriangle(screen, start, end, width, color):
+    x1 = start[0]
+    x2 = end[0]
+    y1 = start[1]
+    y2 = end[1]
+    
+    if x2 > x1 and y2 > y1:
+        pygame.draw.polygon(screen, pygame.Color(color), ((x1, y1), (x2, y2), (x1, y2)), width)
+    if y2 > y1 and x1 > x2:
+        pygame.draw.polygon(screen, pygame.Color(color), ((x1, y1), (x2, y2), (x1, y2)), width)
+    if x1 > x2 and y1 > y2:
+        pygame.draw.polygon(screen, pygame.Color(color), ((x1, y1), (x2, y2), (x2, y1)), width)
+    if x2 > x1 and y1 > y2:
+        pygame.draw.polygon(screen, pygame.Color(color), ((x1, y1), (x2, y2), (x2, y1)), width)
+
+#   EquilateralTriangle
+def drawEquilateralTriangle(screen, start, end, width, color):
+    x1 = start[0]
+    x2 = end[0]
+    y1 = start[1]
+    y2 = end[1]
+
+    width_b = abs(x2 - x1)
+    height = (3**0.5) * width_b / 2
+
+    if y2 > y1:
+        pygame.draw.polygon(screen, pygame.Color(color), ((x1, y2), (x2, y2), ((x1 + x2) / 2, y2 - height)), width)
+    else:
+        pygame.draw.polygon(screen, pygame.Color(color), ((x1, y1), (x2, y1), ((x1 + x2) / 2, y1 - height)), width)
+    
+# Rhombus
+def drawRhombus(screen, start, end, width, color):
+    x1 = start[0]
+    x2 = end[0]
+    y1 = start[1]
+    y2 = end[1]
+    pygame.draw.lines(screen, pygame.Color(color), True, (((x1 + x2) / 2, y1), (x1, (y1 + y2) / 2), ((x1 + x2) / 2, y2), (x2, (y1 + y2) / 2)), width)
+
 def main():
     screen = pygame.display.set_mode((1000, 800))
-    font = pygame.font.SysFont("Verdana", 24)
+    font = pygame.font.SysFont("Verdana", 20)
 
     directory = "files/"
     #my files
@@ -146,6 +225,10 @@ def main():
 
     recta = False
     cir = False
+    squ = False
+    rt = False
+    equil = False
+    rhomb = False
 
     f = ()
     s = ()
@@ -171,14 +254,18 @@ def main():
         screen.blit(save, (160, 0))
         SAVE = pygame.Rect(160, 0, 100, 100)
 
+        '''
         pygame.draw.rect(screen, BLACK, (110, 10, 40, 30), 3)
         pygame.draw.circle(screen, BLACK, (130, 75), 20, 3)
 
+        
         REC = font.render('r', True, BLACK)
         CIR = font.render('c', True, BLACK)
         screen.blit(REC, (125, 7))
         screen.blit(CIR, (123, 57))
-
+        '''
+        com = font.render("circle-'C' rectangle-'R' square-'S' right.triangle-'Z' equilateral.triangle-'E' rhombus-'L'", True, BLACK)
+        screen.blit(com, (0, 100))
         pygame.display.update()
 
         pressed = pygame.key.get_pressed()
@@ -268,20 +355,28 @@ def main():
                     recta = True
                 if event.key == pygame.K_c:
                     cir = True
+                if event.key == pygame.K_s:
+                    squ = True
+                if event.key == pygame.K_z:
+                    rt = True
+                if event.key == pygame.K_e:
+                    equil = True
+                if event.key == pygame.K_l:
+                    rhomb = True
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 f = pygame.mouse.get_pos()
                 
-                if cir == False and recta == False:
+                if cir == False and recta == False and squ == False and rt == False and equil == False and rhomb == False :
                     draw_on = True
 
             if event.type == pygame.MOUSEMOTION:
                 #color = mode
-                if cir == False and recta == False: 
+                if cir == False and recta == False and squ == False and rt == False and equil == False and rhomb == False: 
                     if draw_on:
                         drawLine(screen, last_pos, event.pos, radius, mode)
                     last_pos = event.pos
-                if cir == True or recta == True:
+                if cir == True or recta == True or squ == True or rt == True or equil == True or rhomb == True :
                     s = pygame.mouse.get_pos()
                     
             
@@ -297,6 +392,30 @@ def main():
                     drawCircle(screen, f, s, 3, mode)
                     #pygame.draw.circle(screen, mode, (f[0], f[1]), abs(f[0] - s[0]), 3)
                     cir = False
+                    f = ()
+                    s = ()
+                if squ == True:
+                    drawSquare(screen, f, s, 3, mode)
+                    #pygame.draw.rect(screen, mode, (f[0], f[1], abs(f[0] - s[0]), abs(f[1] - s[1])), 3)
+                    f = ()
+                    s = ()
+                    squ = False
+                if rt == True:
+                    drawRightTriangle(screen, f, s, 3, mode)
+                    #pygame.draw.circle(screen, mode, (f[0], f[1]), abs(f[0] - s[0]), 3)
+                    rt = False
+                    f = ()
+                    s = ()
+                if equil == True:
+                    drawEquilateralTriangle(screen, f, s, 3, mode)
+                    #pygame.draw.rect(screen, mode, (f[0], f[1], abs(f[0] - s[0]), abs(f[1] - s[1])), 3)
+                    f = ()
+                    s = ()
+                    equil = False
+                if rhomb == True:
+                    drawRhombus(screen, f, s, 3, mode)
+                    #pygame.draw.circle(screen, mode, (f[0], f[1]), abs(f[0] - s[0]), 3)
+                    rhomb = False
                     f = ()
                     s = ()
                 
