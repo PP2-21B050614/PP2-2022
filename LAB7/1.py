@@ -10,12 +10,12 @@ running = True
 clock = pygame.time.Clock()
 white = (255,255,255)
 
-bg = pygame.transform.scale(pygame.image.load(os.path.join('mickey.png')),(WIDTH, HEIGHT))
+bg = pygame.transform.scale(pygame.image.load(os.path.join('LAB7/mickey.png')),(WIDTH, HEIGHT))
 
-sec_img = pygame.image.load(os.path.join('right.png'))
+sec_img = pygame.image.load(os.path.join('LAB7/right.png'))
 x_sec, y_sec = WIDTH/2+10 , HEIGHT/2
 
-min_img = pygame.image.load(os.path.join('left.png'))
+min_img = pygame.image.load(os.path.join('LAB7/left.png'))
 x_min, y_min = WIDTH/2, HEIGHT/2 + 10
 
 def rot_center(image, angle, x, y):

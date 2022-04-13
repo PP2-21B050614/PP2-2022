@@ -1,32 +1,46 @@
+from random import randint, random
 import pygame
-import os
-f = os.listdir('LAB7/Music')
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-clock = pygame.time.Clock()
-pygame.font.init()
-font = pygame.font.SysFont('Comic Sans MS', 30)
-text=font.render(f[0],True,RED)
-
 pygame.init()
-size=x, y=(1000,400)
-screen=pygame.display.set_mode(size)
+screen = pygame.display.set_mode((700, 700))
+
+done = True
+x = 25
+y = 25
 clock = pygame.time.Clock()
-screen.fill(BLACK)
-
-k=0
-done=False
-while not done:
+a=randint(0,697)
+b=randint(0,697)
+r=25
+while done:
     for event in pygame.event.get():
-        if event.type==pygame.QUIT:
-            done=True
-    k+=1
-    screen.blit(text,(0,0))
-    screen.blit(f[k],(0,k*20))     
-    clock.tick(60)
-    pygame.display.flip()
+        if event.type == pygame.QUIT:
+            done = False
 
-pygame.quit()
+    pressed = pygame.key.get_pressed()
+    if pressed[pygame.K_UP]:
+        y -= 10
+    if pressed[pygame.K_DOWN]:
+        y += 10
+    if pressed[pygame.K_RIGHT]:
+        x += 10
+    if pressed[pygame.K_LEFT]:
+        x -= 10
+    if x + r > 700:
+        x = 700-r
+    if x < r:
+        x = r
+    if y + r > 700:
+        y = 700-r
+    if y < r:
+        y = r
+    
+    screen.fill((255, 255, 255))
+    if (((a-x)**2)+((b-y)**2))**0.5<10+r:
+        a=randint(0,697)
+        b=randint(0,697)
+        r=r+10
+    d=2
+    pygame.draw.line(screen, (0, 0, 0), (x,y),(x+100,y),10)
+    pygame.draw.circle(screen, (255, 0, 0), [a,b], 10)
+    
+    pygame.display.flip()
+    clock.tick(60)
