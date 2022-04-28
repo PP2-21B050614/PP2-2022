@@ -7,6 +7,7 @@ with open('LAB10/phone.csv','r') as f:
     for i in range(len(d)):
         phone_list.append(tuple(d[i].split(',')))
 
+
 def insert_new(list):
     sql = """
     insert into phonebook(name, phone_number) values (%s, %s);

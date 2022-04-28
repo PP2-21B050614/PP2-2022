@@ -22,5 +22,6 @@ def update(id, phone_number):
         if conn is not None:
             conn.close()
 
+
 #update(1, 'Aidar')
 update(1, '6030969')

@@ -18,7 +18,7 @@ def insert_new(name, phone_number):
     finally:
         if conn is not None:
             conn.close()
-
+ 
 while True:
     s=str(input())
     n, p =s.split(',')

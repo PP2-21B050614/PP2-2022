@@ -5,6 +5,7 @@ grant all privileges on database_name to 'user_name':
 """
 
 
+
 import psycopg2
 
 
