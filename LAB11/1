@@ -1,0 +1,77 @@
+create or replace function getUserFromPattern(_pattern varchar)
+    returns table
+            (
+                id   integer,
+                name varchar,
+                phone varchar
+            )
+as
+$$
+begin
+    return query
+        select p.id, p.name, p.phone
+        from phonebook as p
+        where p.name ilike $1 or p.phone ilike $1;
+end
+$$ language plpgsql;
+###
+
+
+create or replace procedure insertUser(_name varchar, _phone varchar)
+as
+$$
+begin
+    update phonebook
+    set name = $1, phone = $2
+    where name = $1 or phone = $2;
+    if not found then
+        insert into phonebook(name, phone)
+        values ($1, $2);
+    end if;
+end;
+$$
+    LANGUAGE plpgsql;
+
+
+
+###
+
+
+create or replace function getUsersWithPagination(_current_page integer, _record_per_page integer)
+    returns table
+            (
+                id   integer,
+                name varchar,
+                phone varchar
+            )
+as
+$$
+    declare
+        id_page_previous integer;
+begin
+        id_page_previous := ($1 - 1) * $2;
+    return query
+        select p.id, p.name, p.phone
+        from phonebook as p
+        where p.id > id_page_previous
+        limit $2;
+end
+$$ language plpgsql;
+
+
+
+###
+
+
+create or replace procedure deleteUser(_data varchar)
+as
+$$
+begin
+    delete from phonebook where name = $1 or phone = $1;
+end;
+$$
+    LANGUAGE plpgsql;
+
+
+
+
